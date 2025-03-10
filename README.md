@@ -16,14 +16,18 @@
 
 To install the Mantoq package directly from GitHub, follow these steps:
 
-1. **Clone the repository**: If you haven't already, clone the repository from GitHub.
+1. **Clone the repository**:
+
+If you haven't already, clone the repository from GitHub.
 
    ```bash
    git clone https://github.com/mush42/mantoq.git
    cd mantoq
    ```
 
-2. **Install the package**: Install the package using `pip` with the `-e` flag, which allows you to install it in "editable" mode. This way, you can sync changes as you update the repository.
+2. **Install the package**:
+
+We recommend using [uv] (https://docs.astral.sh/uv/getting-started/installation/) to install the package:
 
    ```bash
    uv sync
