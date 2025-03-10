@@ -157,6 +157,20 @@ class TextEncoder:
             )
         )
 
+    def restore_removed_chars(self, org, clean, diacritics):
+        diacritics = [d for (c, d) in zip(clean, diacritics) if c !=  WORD_SEPARATOR]
+        removed_chars = set(org).difference(set(clean))
+        removed_chars = {*removed_chars, WORD_SEPARATOR}
+        diac_iter = iter(diacritics)
+        output = []
+        for c in org:
+            output.append(c)
+            if c in removed_chars:
+                continue
+            diac = next(diac_iter)
+            output.append(diac)
+        return ''.join(output)
+
     @cached_property
     def target_id_to_label(self):
         ret = {}

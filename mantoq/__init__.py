@@ -25,12 +25,13 @@ def g2p(
         text = tashkeel(text)
     if process_numbers:
         text = num2words(text)
+    normalized_text = text
     phones = arabic_to_phonemes(text)
     phones = simplify_phonemes(phones)
     tokens = phonemes_to_tokens(phones)
     if not append_eos:
         tokens = tokens[:-1]
-    return tokens
+    return normalized_text, tokens
 
 
 def tokens_to_ids(tokens: list[str]) -> list[int]:

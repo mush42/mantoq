@@ -1,5 +1,5 @@
-import importlib.resources as resources
 from dataclasses import dataclass
+from importlib_resources import files, as_file
 from typing import Dict
 
 import numpy as np
@@ -51,15 +51,15 @@ class FeaturizedText:
 class LibtashkeelDiacritizer:
 
     def __init__(self) -> None:
-        with resources.open_binary(assets, "libtashkeel.onnx") as f:
-            model_bytes = f.read()
-        self.session = onnxruntime.InferenceSession(
-            model_bytes, providers=["CPUExecutionProvider"]
-        )
+        model_onnx = files(assets).joinpath("libtashkeel.onnx")
+        with as_file(model_onnx) as mx:
+            model_bytes = mx.read_bytes()
+            self.session = onnxruntime.InferenceSession(model_bytes, providers=["CPUExecutionProvider"])
         self.text_encoder = TextEncoder()
         self.input_pad_id = self.text_encoder.input_pad_id
 
     def __call__(self, input_sentences: list[str]) -> list[str]:
+        original_sents = input_sentences
         input_sentences = [self.text_encoder.clean(sent) for sent in input_sentences]
         features = [FeaturizedText.extract_features(sent) for sent in input_sentences]
         char_inputs = [
@@ -76,12 +76,12 @@ class LibtashkeelDiacritizer:
             char_inputs, diac_hints, input_lengths
         )
         output_sentences = []
-        for length, src, prediction in zip(input_lengths, char_inputs, predictions):
-            src = src[: length + 2]
-            prediction = prediction[:length]
-            sentence = self.text_encoder.combine_text_and_diacritics(
-                list(src), list(prediction)
-            )
+        for original_sentence, length, src, prediction in zip(original_sents, input_lengths, char_inputs, predictions):
+            src = list(src[:length])
+            prediction = list(prediction[:length])
+            clean = self.text_encoder.sequence_to_input(src)
+            diacritics = self.text_encoder.sequence_to_target(prediction)
+            sentence = self.text_encoder.restore_removed_chars(original_sentence, clean, diacritics)
             output_sentences.append(sentence)
         return output_sentences
 
