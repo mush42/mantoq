@@ -53,8 +53,11 @@ Converts Arabic text to phonemes and returns a list of tokens.
 ```python
 import mantoq
 
-tokens = mantoq.g2p("مرحبا بالعالم")
-print(tokens)
+normalized_text, phonemes = mantoq.g2p("مرحبا بالعالم")
+print(normalized_text)
+# مَرْحَبًا بِالْعالَمِ
+print(phonemes)
+# ['m', 'a', 'r', 'H', 'a', 'b', 'a', 'n', 'aa', '_+_', 'b', 'i', 'l', 'E', 'aa', 'l', 'a', 'm', 'i']
 ```
 
 ### Tokens to IDs
@@ -72,8 +75,9 @@ Converts a list of tokens into their corresponding integer IDs.
 ```python
 import mantoq
 
-token_ids = mantoq.tokens2ids(["m", "a", "r", "h", "a", "b", "a"])
+token_ids = mantoq.tokens2ids(['m', 'a', 'r', 'H', 'a', 'b', 'a', 'n', 'aa', '_+_', 'b', 'i', 'l', 'E', 'aa', 'l', 'a', 'm', 'i'])
 print(token_ids)
+# [37, 43, 23, 19, 43, 15, 43, 38, 46, 4, 15, 45, 36, 31, 46, 36, 43, 37, 45]
 ```
 
 ## Acknowledgements
