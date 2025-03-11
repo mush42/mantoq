@@ -34,5 +34,5 @@ def g2p(
     return normalized_text, tokens
 
 
-def tokens_to_ids(tokens: list[str]) -> list[int]:
+def tokens2ids(tokens: list[str]) -> list[int]:
     return _tokens_to_id(tokens)

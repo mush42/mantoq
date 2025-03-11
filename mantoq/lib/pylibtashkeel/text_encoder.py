@@ -8,7 +8,7 @@ from typing import Any, Optional
 from .constants import (ALL_VALID_DIACRITICS, ARABIC_LETTERS, DIACRITIC_CHARS,
                         DIACRITIC_LABELS, NUMERAL_CHARS, PUNCTUATIONS,
                         WORD_SEPARATOR, ArabicDiacritics)
-from .text_cleaners import valid_vocab_char_cleaner
+from .text_cleaners import diacritics_cleaner, valid_vocab_char_cleaner
 
 PAD = "_"
 NUM = "#"
@@ -158,17 +158,15 @@ class TextEncoder:
         )
 
     def restore_removed_chars(self, org, clean, diacritics):
-        diacritics = [d for (c, d) in zip(clean, diacritics) if c !=  WORD_SEPARATOR]
-        removed_chars = set(org).difference(set(clean))
-        removed_chars = {*removed_chars, WORD_SEPARATOR}
+        org = diacritics_cleaner(org)
+        diacritics = [d for (c, d) in zip(clean, diacritics) if c in  ARABIC_LETTERS]
         diac_iter = iter(diacritics)
         output = []
         for c in org:
             output.append(c)
-            if c in removed_chars:
-                continue
-            diac = next(diac_iter)
-            output.append(diac)
+            if c in ARABIC_LETTERS:
+                diac = next(diac_iter)
+                output.append(diac)
         return ''.join(output)
 
     @cached_property

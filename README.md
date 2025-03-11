@@ -1,6 +1,6 @@
 <div align="center">
 
-[![python](https://img.shields.io/badge/-Python_3.9-blue?logo=python&logoColor=white)](https://www.python.org/downloads/release/python-3100/)
+[![python](https://img.shields.io/badge/-Python_3.11-blue?logo=python&logoColor=white)](https://www.python.org/downloads/release/python-3110/)
 
 </div>
 
@@ -22,20 +22,24 @@ If you haven't already, clone the repository from GitHub.
 
    ```bash
    git clone https://github.com/mush42/mantoq.git
-   cd mantoq
    ```
 
 2. **Install the package**:
 
-We recommend using [uv] (https://docs.astral.sh/uv/getting-started/installation/) to install the package:
+We recommend using [uv](https://docs.astral.sh/uv/getting-started/installation/) to install the package:
 
    ```bash
+   cd mantoq
    uv sync
    ```
 
 ## Public Interface
 
-### `g2p(text: str, add_tashkeel: bool = True, process_numbers: bool = True, append_eos: bool = False) -> list[str]`
+### G2P
+
+```python
+mantoq.g2p(text: str, add_tashkeel: bool = True, process_numbers: bool = True, append_eos: bool = False) -> list[str]
+```
 
 Converts Arabic text to phonemes and returns a list of tokens.
 
@@ -53,7 +57,11 @@ tokens = mantoq.g2p("مرحبا بالعالم")
 print(tokens)
 ```
 
-### `tokens_to_ids(tokens: list[str]) -> list[int]`
+### Tokens to IDs
+
+```python
+mantoq.tokens2ids(tokens: list[str]) -> list[int]
+```
 
 Converts a list of tokens into their corresponding integer IDs.
 
@@ -64,7 +72,7 @@ Converts a list of tokens into their corresponding integer IDs.
 ```python
 import mantoq
 
-token_ids = mantoq.tokens_to_ids(["m", "a", "r", "h", "a", "b", "a"])
+token_ids = mantoq.tokens2ids(["m", "a", "r", "h", "a", "b", "a"])
 print(token_ids)
 ```
 
