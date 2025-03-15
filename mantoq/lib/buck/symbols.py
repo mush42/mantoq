@@ -59,4 +59,5 @@ symbols = [
     "aa",  # long
     "uu",
     "ii",
+    "aaaa",
 ]
