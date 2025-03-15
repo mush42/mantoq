@@ -12,6 +12,12 @@ MANTOQ_SPECIAL_SYMBOLS = dict(
 )
 # Maps Arabic-specific puncs with their English equivlents
 AR_SPECIAL_PUNCS_TABLE = str.maketrans("،؟؛", ",?;")
+OMITTED_SYMBOLS = str.maketrans("", "", "+=<>")
+
+# Quotes
+QUOTES = '“”„«»'
+QUOTES_TABLE = str.maketrans(QUOTES, '"' * len(QUOTES))
+BRACKETS_TABLE = str.maketrans("[]{}", "()()")
 
 
 def g2p(
@@ -20,7 +26,7 @@ def g2p(
     process_numbers: bool = True,
     append_eos: bool = False,
 ) -> list[str]:
-    text = text.translate(AR_SPECIAL_PUNCS_TABLE)
+    text = text.translate(AR_SPECIAL_PUNCS_TABLE).translate(QUOTES_TABLE).translate(BRACKETS_TABLE)
     if add_tashkeel:
         text = tashkeel(text)
     if process_numbers:

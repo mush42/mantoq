@@ -22,6 +22,7 @@ symbols = [
     "-",
     ")",
     "(",
+    '"',
     # consonants
     "<",  # hamza
     "b",  # baa'
